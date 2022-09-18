@@ -1,0 +1,6 @@
+
+# Google ads query builder
+# https://developers.google.com/google-ads/api/fields/v11/accessible_bidding_strategy_query_builder
+
+# Template dashboard buejs
+# https://www.creative-tim.com/product/vue-argon-dashboard
