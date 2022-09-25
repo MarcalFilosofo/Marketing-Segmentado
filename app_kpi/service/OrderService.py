@@ -34,6 +34,19 @@ class OrderService(object):
         nps = pd.DataFrame(self.conn.fetchall())
         return round(nps['nps'][0], 1)
 
+    def get_mau(self):
+        primeiro_dia_mes = datetime.today().strftime('%Y-%m') + "-01"
+
+        self.conn.execute("""
+            SELECT
+                Count(*) as qt
+            FROM wp_wc_customer_lookup
+            WHERE wp_wc_customer_lookup.date_last_active >= %s;
+        """, [primeiro_dia_mes])
+
+        mau = pd.DataFrame(self.conn.fetchall())
+        return int(mau['qt'][0])
+
     def get_ticket_medio(self):
         self.conn.execute("""
             SELECT AVG(total_sales) as avg FROM wp_wc_order_stats
@@ -83,7 +96,7 @@ class OrderService(object):
 
         return [mrr_i, mrr_ii]
 
-    def get_mensal(self):
+    def get_churn_mensal(self):
         primeiro_dia_mes = datetime.today().strftime('%Y-%m') + "-01"
 
         ano_atual = datetime.today().strftime('%Y')
@@ -107,6 +120,13 @@ class OrderService(object):
         """, [dois_anos_atras])
 
         qt_clientes_perdios = pd.DataFrame(self.conn.fetchall())
+
+
+        if(qt_novos_clientes_mes_anterior['qt'][0] == 0):
+            return 0
+
+        if(qt_clientes_perdios['qt'][0] == 0):
+            return 100
 
         churn_mensal = qt_clientes_perdios['qt'][0] / qt_novos_clientes_mes_anterior['qt'][0] * 100
         return churn_mensal
@@ -160,8 +180,11 @@ class OrderService(object):
         return round(receita_liquida, 2)
 
     def get_ltv(self):
-        churn_mensal = self.get_mensal()
+        churn_mensal = self.get_churn_mensal()
         receita_liquida = self.get_receita_liquida()
+
+        if(churn_mensal == 0):
+            churn_mensal = 1
 
         media_tv_cliente = 1 / churn_mensal
         kepler_ltv = receita_liquida * media_tv_cliente
@@ -194,4 +217,4 @@ class OrderService(object):
         taxa_desconto = self.get_taxa_desconto()
 
         clv = receita_liquida * taxa_conversao / (1 + taxa_desconto) - cac
-        return clv
+        return round(clv, 2)
