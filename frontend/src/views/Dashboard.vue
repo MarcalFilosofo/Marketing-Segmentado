@@ -48,15 +48,62 @@
             ></card>
           </div>
         </div>
+        
+        <div class="row mb-3">
+          <div class="col-lg-6 mb-lg">
+            <!-- line chart -->
+            <div class="card z-index-2">
+              <consumption-day-chart title="Horários com mais compras"/>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-lg">
+            <!-- line chart -->
+            <div class="card z-index-2">
+              <gradient-line-chart title="Histórico do ticket médio"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="row mb-3">
+          <div class="col-lg-12 mb-lg">
+            <div class="card z-index-2">
+              <gradient-line-chart title="Horários com mais compras"/>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- <div class="row">
+          <div class="col-lg-12 mb-lg">
+            <div class="card z-index-2">
+              <active-users-chart />
+            </div>
+          </div>
+        </div> -->
+
+        <div class="row mb-3">
+          <div class="col-lg-12 mb-lg">
+            <div class="card z-index-2">
+              <div class="card-title px-4 pt-2">
+                <strong>
+                  Mapa de vendas
+                </strong>
+              </div>
+                <heat-map-chart />
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-lg-12 mb-lg">
             <!-- line chart -->
             <div class="card z-index-2">
-              <gradient-line-chart />
+              <consumption-room-chart />
             </div>
           </div>
         </div>
-        <div class="row mt-4">
+
+        <!-- <div class="row mt-4">
           <div class="col-lg-7 mb-lg-0 mb-4">
             <div class="card">
               <div class="p-3 pb-0 card-header">
@@ -106,21 +153,17 @@
           <div class="col-lg-5">
             <categories-card />
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
 <script>
 import Card from "@/examples/Cards/Card.vue";
+import ConsumptionDayChart from "@/examples/Charts/ConsumptionDayChart.vue";
+import ConsumptionRoomChart from "@/examples/Charts/ConsumptionRoomChart.vue";
 import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
-// import Carousel from "./components/Carousel.vue";
-import CategoriesCard from "./components/CategoriesCard.vue";
-
-import US from "@/assets/img/icons/flags/US.png";
-import DE from "@/assets/img/icons/flags/DE.png";
-import GB from "@/assets/img/icons/flags/GB.png";
-import BR from "@/assets/img/icons/flags/BR.png";
+import HeatMapChart from "@/examples/Charts/HeatMapChart.vue";
 
 export default {
   name: "dashboard-default",
@@ -165,7 +208,7 @@ export default {
           value: "R$ 0.0",
           percentage: "",
           iconClass: "ni ni-single-02",
-          detail: "Cost of Acquisition Customer",
+          detail: "Custo de aquisição de cliente",
           iconBackground: "bg-gradient-primary",
         },
         mau: {
@@ -173,7 +216,7 @@ export default {
           value: "0",
           percentage: "",
           iconClass: "ni ni-circle-08",
-          detail: "Monthly Active Users",
+          detail: "Clientes ativos mensalmente",
           iconBackground: "bg-gradient-primary",
         },
         nps: {
@@ -185,36 +228,7 @@ export default {
           iconBackground: "bg-gradient-primary",
         },
       },
-      sales: {
-        us: {
-          country: "United States",
-          sales: 2500,
-          value: "$230,900",
-          bounce: "29.9%",
-          flag: US,
-        },
-        germany: {
-          country: "Germany",
-          sales: "3.900",
-          value: "$440,000",
-          bounce: "40.22%",
-          flag: DE,
-        },
-        britain: {
-          country: "Great Britain",
-          sales: "1.400",
-          value: "$190,700",
-          bounce: "23.44%",
-          flag: GB,
-        },
-        brasil: {
-          country: "Brasil",
-          sales: "562",
-          value: "$143,960",
-          bounce: "32.14%",
-          flag: BR,
-        },
-      },
+      
     };
   },
   mounted(){
@@ -223,8 +237,12 @@ export default {
   components: {
     Card,
     GradientLineChart,
+    // ActiveUsersChart,
+    ConsumptionDayChart,
+    HeatMapChart,
+    ConsumptionRoomChart,
     // Carousel,
-    CategoriesCard,
+    // CategoriesCard,
   },
 };
 </script>

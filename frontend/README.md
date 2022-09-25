@@ -1,4 +1,4 @@
-# [Vue Argon Dashboard 2](http://demos.creative-tim.com/vue-argon-dashboard/?ref=readme-vad) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https://www.creative-tim.com/product/vue-argon-dashboard&text=Check%20Vue%Argon%20Dashboard%20made%20by%20@CreativeTim%20#webdesign%20#dashboard%20#argondesign%20#vue%20https://www.creative-tim.com/product/vue-argon-dashboard)
+# [Vue AdsBoost](http://demos.creative-tim.com/vue-argon-dashboard/?ref=readme-vad) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https://www.creative-tim.com/product/vue-argon-dashboard&text=Check%20Vue%Argon%20Dashboard%20made%20by%20@CreativeTim%20#webdesign%20#dashboard%20#argondesign%20#vue%20https://www.creative-tim.com/product/vue-argon-dashboard)
 
 ![version](https://img.shields.io/badge/version-3.0.0-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/vue-argon-dashboard.svg)](https://github.com/creativetimofficial/vue-argon-dashboard/issues?q=is%3Aopen+is%3Aissue) [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/vue-argon-dashboard.svg)](https://github.com/creativetimofficial/vue-argon-dashboard/issues?q=is%3Aissue+is%3Aclosed)
 
@@ -7,7 +7,7 @@
 Start your Development with an Innovative Admin Template for Bootstrap 5 and VueJS 3. If you like the look & feel of the hottest design trend right now, you will fall in love with this dashboard! It features a huge number of components built to fit together and look amazing.
 
 **Fully Coded Components**<br />
-Vue Argon Dashboard 2 is built with over 70 frontend individual elements, like buttons, inputs, navbars, nav tabs, cards, or alerts, giving you the freedom of choosing and combining. All components can take variations in color, which you can easily modify using SASS files and classes. You will save a lot of time going from prototyping to full-functional code because all elements are implemented.
+Vue AdsBoost is built with over 70 frontend individual elements, like buttons, inputs, navbars, nav tabs, cards, or alerts, giving you the freedom of choosing and combining. All components can take variations in color, which you can easily modify using SASS files and classes. You will save a lot of time going from prototyping to full-functional code because all elements are implemented.
 
 This free Bootstrap 5 & VueJS 3 Dashboard is coming with prebuilt design blocks, so the development process is seamless,
 switching from our pages to the real website is very easy to be done.
@@ -19,7 +19,7 @@ Each element is well presented in very complex documentation.
 You can read more about the [documentation here](https://www.creative-tim.com/learning-lab/vue/overview/argon-dashboard/).
 
 **Example Pages**<br />
-If you want to get inspiration or just show something directly to your clients, you can jump-start your development with our pre-built example pages. Every page is spaced well, with attractive layouts and pleasing shapes. Vue Argon Dashboard 2 has everything you need to quickly set up an amazing project.
+If you want to get inspiration or just show something directly to your clients, you can jump-start your development with our pre-built example pages. Every page is spaced well, with attractive layouts and pleasing shapes. Vue AdsBoost has everything you need to quickly set up an amazing project.
 
 View [example pages here](https://demos.creative-tim.com/vue-argon-dashboard/).
 
@@ -57,7 +57,7 @@ Let us know your thoughts below. And good luck with development!
 | VueJS |
 | ----- |
 
-| [![Vue Argon Dashboard 2](https://s3.amazonaws.com/creativetim_bucket/products/156/orginal/vue-argon-dashboard.jpg)](http://demos.creative-tim.com/vue-argon-dashboard/?ref=readme-vad)
+| [![Vue AdsBoost](https://s3.amazonaws.com/creativetim_bucket/products/156/orginal/vue-argon-dashboard.jpg)](http://demos.creative-tim.com/vue-argon-dashboard/?ref=readme-vad)
 
 ## Demo
 
@@ -80,7 +80,7 @@ Quick start options:
 
 ## Documentation
 
-The documentation for the Vue Argon Dashboard 2 is hosted at our [website](https://www.creative-tim.com/learning-lab/vue/overview/argon-dashboard/?ref=readme-vad).
+The documentation for the Vue AdsBoost is hosted at our [website](https://www.creative-tim.com/learning-lab/vue/overview/argon-dashboard/?ref=readme-vad).
 
 ### What's included
 
@@ -166,9 +166,9 @@ At present, we officially aim to support the last two versions of the following 
 
 ## Reporting Issues
 
-We use GitHub Issues as the official bug tracker for the Vue Argon Dashboard 2. Here are some advices for our users that want to report an issue:
+We use GitHub Issues as the official bug tracker for the Vue AdsBoost. Here are some advices for our users that want to report an issue:
 
-1. Make sure that you are using the latest version of the Vue Argon Dashboard 2. Check the CHANGELOG from your dashboard on our [website](https://www.creative-tim.com/product/vue-argon-dashboard?ref=readme-vad).
+1. Make sure that you are using the latest version of the Vue AdsBoost. Check the CHANGELOG from your dashboard on our [website](https://www.creative-tim.com/product/vue-argon-dashboard?ref=readme-vad).
 2. Providing us reproducible steps for the issue will shorten the time it takes for it to be fixed.
 3. Some issues may be browser specific, so specifying in what browser you encountered the issue might help.
 

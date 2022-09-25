@@ -1,16 +1,10 @@
 <template>
-  <div class="card">
-    <div class="pb-0 card-header mb-0">
+  <div class="card h-100">
+    <div class="card-body">
       <h6>{{ title }}</h6>
-      <p class="text-sm">
-        <i class="fa fa-arrow-up text-success"></i>
-        <span class="font-weight-bold">{{detail1}}</span>
-        {{detail2}}
-      </p>
-    </div>
-    <div class="p-3 card-body">
-      <div class="chart">
-        <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
+      
+      <div class="pt-3 chart">
+        <canvas id="chart-line" class="chart-canvas" ></canvas>
       </div>
     </div>
   </div>
@@ -37,10 +31,35 @@ export default {
     },
   },
 
-  mounted() {
+  data() {
+    return {
+      labels: [],
+      data: [],
+    }
+  },
+
+  async mounted() {
     var ctx1 = document.getElementById("chart-line").getContext("2d");
 
     var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
+
+    var myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
+
+    let requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+    }
+
+    try {
+      let response = await fetch('http://localhost:5000/historico_ticket_medio', requestOptions)
+      let historico_ticket_medio = await response.json()
+      console.log("Lihnha", historico_ticket_medio)
+      this.labels = historico_ticket_medio.ano_mes
+      this.data = historico_ticket_medio.qt
+    } catch (error) {
+      console.log(error)
+    }
 
     gradientStroke1.addColorStop(1, "rgba(94, 114, 228, 0.2)");
     gradientStroke1.addColorStop(0.2, "rgba(94, 114, 228, 0.0)");
@@ -48,7 +67,7 @@ export default {
     new Chart(ctx1, {
       type: "line",
       data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        labels: this.labels,
         datasets: [
           {
             label: "Mobile apps",
@@ -60,7 +79,7 @@ export default {
             // eslint-disable-next-line no-dupe-keys
             borderWidth: 3,
             fill: true,
-            data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+            data: this.data,
             maxBarThickness: 6,
           },
         ],

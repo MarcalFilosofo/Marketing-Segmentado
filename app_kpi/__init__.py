@@ -40,9 +40,21 @@ def get_report():
 
     return report
 
+
+@app.route('/historico_ticket_medio', methods=["GET"])
+def return_historico_ticket_medio():
+    return orderService.get_historico_ticket_medio()
+
+
+@app.route('/groupping_hours', methods=["GET"])
+def return_groupping_hours():
+    return orderService.get_grouping_shopping_hours()
+
+
 @app.route('/cluster-locale', methods=["GET"])
 def return_cluster_locale():
     return customerService.get_cluste_locale()
+
 
 @app.route("/ticket-medio", methods=["GET"])
 def return_ticket_medio():

@@ -7,6 +7,52 @@ class OrderService(object):
     def __init__(self):
         self.conn = DBConnection.getConnection()
 
+    def get_historico_ticket_medio(self):
+        self.conn = DBConnection.getConnection()
+
+        self.conn.execute("""
+            SELECT 
+                ROUND(AVG(total_sales), 2) as avg,
+                CONCAT(EXTRACT(YEAR from date_created),"/",EXTRACT(MONTH from date_created)) as ano_mes
+            FROM 
+                wp_wc_order_stats
+            GROUP BY ano_mes;
+        """)
+
+        ticket_medio = pd.DataFrame(self.conn.fetchall())
+
+        return dict({
+            'ano_mes': list(ticket_medio['ano_mes']),
+            'qt': list(ticket_medio['avg'])
+        })
+
+
+    def get_grouping_shopping_hours(self):
+        ano_atual = datetime.today().strftime('%Y')
+        day_one_last_year = str(int(ano_atual) - 1) + "-" + datetime.today().strftime('%m-%d')
+
+        self.conn.execute("""
+            SELECT 
+                COUNT(*) qt,
+                hour(date_created),  
+                CONCAT(hour(date_created), "hr") as hour 
+            FROM 
+                `wp_wc_order_product_lookup`  
+            WHERE date_created >= %s
+            GROUP BY hour  
+            ORDER BY hour(date_created)
+        """, [day_one_last_year])
+
+        grouping_shopping_hours = pd.DataFrame(self.conn.fetchall())
+
+        return dict({
+            "qt": list(grouping_shopping_hours['qt']),
+            "hour": list(grouping_shopping_hours['hour'])
+        })
+
+
+
+
     def get_lista_nps(self):
         self.conn.execute("""
             SELECT wp_posts.post_title, AVG(wp_commentmeta.meta_value) as nps FROM wp_posts

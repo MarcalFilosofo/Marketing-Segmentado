@@ -15,7 +15,7 @@
           </template>
         </sidenav-item>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <sidenav-item
           url="/tables"
           :class="getRoute() === 'tables' ? 'active' : ''"
@@ -27,8 +27,8 @@
             ></i>
           </template>
         </sidenav-item>
-      </li>
-      <li class="nav-item">
+      </li> -->
+      <!-- <li class="nav-item">
         <sidenav-item
           url="/billing"
           :class="getRoute() === 'billing' ? 'active' : ''"
@@ -38,8 +38,8 @@
             <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
           </template>
         </sidenav-item>
-      </li>
-      <li class="nav-item">
+      </li> -->
+      <!-- <li class="nav-item">
         <sidenav-item
           url="/virtual-reality"
           :class="getRoute() === 'virtual-reality' ? 'active' : ''"
@@ -51,8 +51,8 @@
             <i class="ni ni-app text-info text-sm opacity-10"></i>
           </template>
         </sidenav-item>
-      </li>
-      <li class="nav-item">
+      </li> -->
+      <!-- <li class="nav-item">
         <sidenav-item
           url="/rtl-page"
           :class="getRoute() === 'rtl-page' ? 'active' : ''"
@@ -62,24 +62,9 @@
             <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
           </template>
         </sidenav-item>
-      </li>
-      <li class="mt-3 nav-item">
-        <h6
-          v-if="this.$store.state.isRTL"
-          class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
-          :class="this.$store.state.isRTL ? 'me-4' : 'ms-2'"
-        >
-          صفحات المرافق
-        </h6>
-        <h6
-          v-else
-          class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
-          :class="this.$store.state.isRTL ? 'me-4' : 'ms-2'"
-        >
-          ACCOUNT PAGES
-        </h6>
-      </li>
-      <li class="nav-item">
+      </li> -->
+   
+      <!-- <li class="nav-item">
         <sidenav-item
           url="/profile"
           :class="getRoute() === 'profile' ? 'active' : ''"
@@ -111,20 +96,20 @@
             <i class="ni ni-collection text-info text-sm opacity-10"></i>
           </template>
         </sidenav-item>
-      </li>
+      </li> -->
     </ul>
   </div>
-  <div class="pt-3 mx-3 mt-3 sidenav-footer">
+  <!-- <div class="pt-3 mx-3 mt-3 sidenav-footer">
     <sidenav-card
       :class="cardBg"
       textPrimary="Need Help?"
       textSecondary="Please check our docs"
     />
-  </div>
+  </div> -->
 </template>
 <script>
 import SidenavItem from "./SidenavItem.vue";
-import SidenavCard from "./SidenavCard.vue";
+// import SidenavCard from "./SidenavCard.vue";
 
 export default {
   name: "SidenavList",
@@ -133,14 +118,14 @@ export default {
   },
   data() {
     return {
-      title: "Argon Dashboard 2",
+      title: "AdsBoost",
       controls: "dashboardsExamples",
       isActive: "active"
     };
   },
   components: {
     SidenavItem,
-    SidenavCard
+    // SidenavCard
   },
   methods: {
     getRoute() {
