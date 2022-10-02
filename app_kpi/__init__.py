@@ -8,9 +8,10 @@ from datetime import timedelta
 
 from service.OrderService import OrderService
 from service.CustomerService import CustomerService
+from service.ProductService import ProductService
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 app.config['MEDIA_ROOT'] = os.path.join(PROJECT_ROOT, 'media_files')
@@ -22,7 +23,11 @@ def converter_em_dict(var, label):
 
 orderService = OrderService()
 customerService = CustomerService()
+productService = ProductService()
 
+@app.route('/products-kpis', methods=["GET"])
+def return_products_kpis():
+    return productService.get_products_kpis()
 
 @app.route('/report', methods=['GET'])
 def get_report():
@@ -49,6 +54,11 @@ def return_historico_ticket_medio():
 @app.route('/groupping_hours', methods=["GET"])
 def return_groupping_hours():
     return orderService.get_grouping_shopping_hours()
+
+
+@app.route('/groupping_categories', methods=["GET"])
+def return_groupping_categories():
+    return orderService.get_groupping_categories()
 
 
 @app.route('/cluster-locale', methods=["GET"])

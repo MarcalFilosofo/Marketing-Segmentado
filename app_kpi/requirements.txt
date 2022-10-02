@@ -2,3 +2,8 @@ mariadb
 dotenv
 flask
 pandas
+flask_cors
+requests
+numpy
+sklearn.cluster
+sklearn

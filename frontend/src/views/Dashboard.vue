@@ -94,15 +94,6 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-lg-12 mb-lg">
-            <!-- line chart -->
-            <div class="card z-index-2">
-              <consumption-room-chart />
-            </div>
-          </div>
-        </div>
-
         <!-- <div class="row mt-4">
           <div class="col-lg-7 mb-lg-0 mb-4">
             <div class="card">
@@ -161,7 +152,7 @@
 <script>
 import Card from "@/examples/Cards/Card.vue";
 import ConsumptionDayChart from "@/examples/Charts/ConsumptionDayChart.vue";
-import ConsumptionRoomChart from "@/examples/Charts/ConsumptionRoomChart.vue";
+// import ConsumptionRoomChart from "@/examples/Charts/ConsumptionRoomChart.vue";
 import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
 import HeatMapChart from "@/examples/Charts/HeatMapChart.vue";
 
@@ -240,7 +231,7 @@ export default {
     // ActiveUsersChart,
     ConsumptionDayChart,
     HeatMapChart,
-    ConsumptionRoomChart,
+    // ConsumptionRoomChart,  
     // Carousel,
     // CategoriesCard,
   },

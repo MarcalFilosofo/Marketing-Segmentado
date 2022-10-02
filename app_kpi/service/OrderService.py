@@ -26,6 +26,28 @@ class OrderService(object):
             'qt': list(ticket_medio['avg'])
         })
 
+    def get_groupping_categories(self):
+        ano_atual = datetime.today().strftime('%Y')
+        day_one_last_year = str(int(ano_atual) - 1) + "-" + datetime.today().strftime('%m-%d')
+
+        self.conn.execute("""
+                    SELECT 
+                        COUNT(*) qt,
+                        hour(date_created),  
+                        CONCAT(hour(date_created), "hr") as hour 
+                    FROM 
+                        `wp_wc_order_product_lookup`  
+                    WHERE date_created >= %s
+                    GROUP BY hour  
+                    ORDER BY hour(date_created)
+                """, [day_one_last_year])
+
+        grouping_shopping_hours = pd.DataFrame(self.conn.fetchall())
+
+        return dict({
+            "qt": list(grouping_shopping_hours['qt']),
+            "hour": list(grouping_shopping_hours['hour'])
+        })
 
     def get_grouping_shopping_hours(self):
         ano_atual = datetime.today().strftime('%Y')
@@ -207,6 +229,7 @@ class OrderService(object):
             mrr_i = 0
 
         if mrr_ii == None:
+            return 100
             mrr_ii = 0
 
         churn_liquido = mrr_i - upsell / mrr_ii * 100

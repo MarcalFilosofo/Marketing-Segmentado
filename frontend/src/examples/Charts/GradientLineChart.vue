@@ -19,7 +19,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: "Sales overview",
+      default: "Sales overview", 
     },
     detail1: {
       type: String,
