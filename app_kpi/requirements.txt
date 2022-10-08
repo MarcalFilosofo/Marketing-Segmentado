@@ -6,4 +6,5 @@ flask_cors
 requests
 numpy
 sklearn.cluster
+sklearn.preprocessing
 sklearn

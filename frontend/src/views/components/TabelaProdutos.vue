@@ -21,16 +21,13 @@
               >NPS</th>
               <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >Número de avaliações </th>
-              <th
-                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
               >Situção do estoque</th>
               <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >Auto classificação</th>
+              >Classificação inteligente</th>
               <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >Distance</th>
+              >Rating</th>
             </tr>
           </thead>
           <tbody>
@@ -57,16 +54,15 @@
                 <span class="badge badge-sm " :class="p.nps >= 4 ? 'bg-gradient-success' : 'bg-gradient-danger' ">{{ p.nps }}</span>
               </td>
               <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">{{ p.rating_count }}</span>
-              </td>
-              <td class="align-middle text-center">
-                <span class="text-xs font-weight-bold badge badge-sm" :class="p.stock_status == 1 ? 'bg-gradient-success' : 'bg-gradient-danger' ">{{ p.stock_status == 1 ? 'Disponível' : 'Indisponível' }}</span>
+                <span class="text-xs font-weight-bold badge badge-sm" :class="p.stock_status == 1 ? 'bg-gradient-success' : 'bg-gradient-danger' ">
+                  {{ p.stock_status == 1 ? 'Disponível' : 'Indisponível' }} <small>({{ p.stock_quantity }})</small>
+                </span>
               </td>
               <td class="align-middle text-center">
                 <span class="text-secondary text-xs font-weight-bold">{{ p.K_classes }}</span>
               </td>
               <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">{{ p.distance }}</span>
+                <span class="text-secondary text-xs font-weight-bold">{{ p.rating }}</span>
               </td>
             
             </tr>
