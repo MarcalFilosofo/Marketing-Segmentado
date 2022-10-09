@@ -4,11 +4,21 @@
       <h6>Análise de produtos</h6>
     </div>
     <div class="card-body px-0 pt-0 pb-2">
+      <div class="card-title px-1">
+        <label for="">Digite quanto você deseja investir na campanha</label>
+        <div class="input-group col-12 col-md-6">
+          <input type="number" min="0" class="form-control" id="valor_campanha" placeholder="Valor em Reais" v-model="valorCampanha">
+          <div class="input-group-prepend">
+            <div class="input-group-text bg-primary" v-on:click="this.getProducts()">Calcular campanha</div>
+          </div>
+        </div>
+      </div>
       <div class="table-responsive p-0">
         <table class="table align-items-center mb-0">
           <thead>
             <tr>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Produto</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Valor para investir</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Preço atual</th>
               <th
                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
@@ -31,7 +41,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="p in products" :key="p.id">
+            <tr v-for="p in this.products" :key="p.id">
               <td>
                 <div class="d-flex px-2 py-1">
                   <div>
@@ -40,6 +50,9 @@
                     <h6 class="mb-0 text-sm">{{ p.post_title }}</h6>
                   </div>
                 </div>
+              </td>
+              <td>
+                <p class="text-xs font-weight-bold mb-0">{{ p.valor_investido }}</p>
               </td>
               <td>
                 <p class="text-xs font-weight-bold mb-0">{{ p.current_price }}</p>
@@ -78,38 +91,51 @@ export default {
   name: "tabela-produtos",
   data() {
     return {
-      products: []
+      products: [],
+      valorCampanha: 0
     }
   },
 
+
+  methods: {
+    // return {
+      async getProducts() {
+        var myHeaders = new Headers();
+        myHeaders.append("Accept", "application/json");
+  
+        let requestOptions = {
+          method: 'GET',
+          headers: myHeaders,
+        }
+        
+        let url = `http://localhost:5000/products-kpis?valorCampanha=${this.valorCampanha}`
+
+        let response = await fetch(url, requestOptions)
+        let products = await response.json()
+
+        products = products.map(p => this.getProductClass(p))
+        this.products = products
+  
+      },
+
+      getProductClass(p)  {
+          if(p.repurchase < 30){
+            p.repurchase_class = 'bg-gradient-danger'
+          } else if(p.repurchase >= 30 && p.repurchase < 60){
+            p.repurchase_class = 'bg-gradient-orange'
+          } else if(p.repurchase >= 60 && p.repurchase < 70){
+            p.repurchase_class = 'bg-gradient-warning'
+          } else if(p.repurchase >= 70){
+            p.repurchase_class = 'bg-gradient-success'
+          }
+  
+          return p
+        }
+    // }
+  },
+
   async mounted(){
-    var myHeaders = new Headers();
-    myHeaders.append("Accept", "application/json");
-
-    let requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-    }
-
-    let response = await fetch('http://localhost:5000/products-kpis', requestOptions)
-    let products = await response.json()
-    console.log("Produtos KPI", products)
-     
-    products = products.map((p) => {
-      if(p.repurchase < 30){
-        p.repurchase_class = 'bg-gradient-danger'
-      } else if(p.repurchase >= 30 && p.repurchase < 60){
-        p.repurchase_class = 'bg-gradient-orange'
-      } else if(p.repurchase >= 60 && p.repurchase < 70){
-        p.repurchase_class = 'bg-gradient-warning'
-      } else if(p.repurchase >= 70){
-        p.repurchase_class = 'bg-gradient-success'
-      }
-
-      return p
-    })
-    this.products = products
-
+    await this.getProducts()
 
   },
 

@@ -11,6 +11,11 @@ from infra.DBConnection import DBConnection
 class ProductService(object):
     def __init__(self):
         self.conn = DBConnection.getConnection()
+        self.cmc = 3
+        
+    def get_taxa_convercao(self, product_id):
+        taxa_convercao = 0.1
+        return taxa_convercao
 
     def get_qt_orders(self, product_id):
         self.conn.execute("""
@@ -49,7 +54,11 @@ class ProductService(object):
         except KeyError:
             return 0
 
-    def get_products_kpis(self):
+    def get_products_kpis(self, valorCampanha):
+        if valorCampanha is None:
+            valorCampanha = 0
+
+        valorCampanha = float(valorCampanha)
         self.conn.execute("""
             SELECT 
                 wp_posts.ID,
@@ -75,7 +84,7 @@ class ProductService(object):
             WHERE 
             (wp_commentmeta.meta_key = 'rating' OR wp_commentmeta.meta_key is null)
             AND wp_posts.post_type = "product"
-            GROUP BY wp_posts.post_title  
+            GROUP BY wp_posts.ID  
         """)
 
         products_kpis_1 = pd.DataFrame(self.conn.fetchall())
@@ -102,7 +111,17 @@ class ProductService(object):
         products_kpi = pd.DataFrame(products_kpis_list)
         
         products_kpi['nps'] = products_kpi['nps'].fillna(0)
-        products_kpi['stock_quantity'] = products_kpi['stock_quantity'].fillna(99999)
+
+        self.conn.execute("""
+            SELECT 
+                max(wp_wc_product_meta_lookup.stock_quantity) as max_stock
+            FROM   wp_wc_product_meta_lookup
+        """)
+
+        maior_quantidade_estoque = self.conn.fetchall()[0]['max_stock'] 
+        maior_quantidade_estoque = maior_quantidade_estoque if maior_quantidade_estoque != None else 100
+
+        products_kpi['stock_quantity'] = products_kpi['stock_quantity'].fillna(maior_quantidade_estoque)
 
         scaler = StandardScaler()
 
@@ -115,7 +134,8 @@ class ProductService(object):
 
         for sd in scaled_data:
             ratings.append(np.mean(sd))
-            
+       
+
         min = float(np.min(ratings))
         max = float(np.max(ratings))
 
@@ -134,7 +154,31 @@ class ProductService(object):
         products_kpi['K_classes'] = classes
         products_kpi['rating'] = new_ratings
 
+        total_rating = np.sum(new_ratings)
+
         products_kpi = products_kpi.sort_values(by='rating', ascending=False)
+
+        valor_investido = []
+
+
+        for index, row in products_kpi.iterrows():
+            
+            taxa_convercao = self.get_taxa_convercao(row['id'])
+            visitas_ideais = row['stock_quantity'] / taxa_convercao 
+            valor_produto = visitas_ideais * 3
+
+            if(valor_produto <= valorCampanha):
+                valorCampanha = valorCampanha - valor_produto
+            elif(valorCampanha > 0 and valor_produto > valorCampanha):
+                valor_produto = valorCampanha
+                valorCampanha = 0
+            else: 
+                valor_produto = 0
+
+            valor_investido.append(valor_produto)
+
+        products_kpi['valor_investido'] = valor_investido
+
         return products_kpi.to_dict('records')
 
     def get_rating(self, min, max, rating):

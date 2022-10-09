@@ -27,7 +27,8 @@ productService = ProductService()
 
 @app.route('/products-kpis', methods=["GET"])
 def return_products_kpis():
-    return productService.get_products_kpis()
+    valorCampanha = request.args.get('valorCampanha')
+    return productService.get_products_kpis(valorCampanha)
 
 @app.route('/report', methods=['GET'])
 def get_report():
