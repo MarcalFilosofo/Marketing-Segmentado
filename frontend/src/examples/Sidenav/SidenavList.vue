@@ -8,7 +8,7 @@
         <sidenav-item
           url="/dashboard-default"
           :class="getRoute() === 'dashboard-default' ? 'active' : ''"
-          navText="Impulsionar campanha"
+          navText="Sensor campanha"
         >
           <template v-slot:icon>
             <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
@@ -20,6 +20,28 @@
           url="/analise"
           :class="getRoute() === 'analise' ? 'active' : ''"
           navText="Análise de campanha"
+        >
+          <template v-slot:icon>
+            <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+          </template>
+        </sidenav-item>
+      </li>
+      <li class="nav-item">
+        <sidenav-item
+          url="/produtos"
+          :class="getRoute() === 'produtos' ? 'active' : ''"
+          navText="Detalhes dos produtos"
+        >
+          <template v-slot:icon>
+            <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+          </template>
+        </sidenav-item>
+      </li>
+      <li class="nav-item">
+        <sidenav-item
+          url="/explicacao"
+          :class="getRoute() === 'explicacao' ? 'active' : ''"
+          navText="Explicações e tutoriais"
         >
           <template v-slot:icon>
             <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>

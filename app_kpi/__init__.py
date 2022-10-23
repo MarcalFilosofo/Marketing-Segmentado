@@ -39,7 +39,7 @@ def get_report():
         'churn_liquido': orderService.get_churn_liquido(),
         'churn': orderService.get_churn_mensal(),
         "receita_liquida": orderService.get_receita_liquida(),
-        "ltv": orderService.get_ltv(),
+        "ltv": f"{orderService.get_ltv():_.2f}".replace('.', ',').replace('_', '.'),
         "nps": orderService.get_nps(),
         "cac": orderService.get_cac(),
     })
@@ -119,6 +119,12 @@ def return_nps():
 def return_cac():
     nps = orderService.get_cac()
     return converter_em_dict(nps, "cac")
+
+@app.route("/visita", methods=["POST"])
+def store_visita():
+    return request.args.post('horario')
+
+
 
 
 if __name__ == "__main__":

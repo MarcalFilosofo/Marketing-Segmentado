@@ -126,7 +126,7 @@ class ProductService(object):
         scaler = StandardScaler()
 
         products_kpi_2 = products_kpi
-        scaled_data = scaler.fit_transform(products_kpi_2.drop(['current_price', 'post_title', 'id'], axis=1))
+        scaled_data = scaler.fit_transform(products_kpi_2.drop(['current_price', 'post_title', 'id', 'stock_quantity'], axis=1))
 
         scaled_orders = pd.DataFrame(scaled_data)
 
@@ -146,7 +146,7 @@ class ProductService(object):
             )
         )
 
-        X = np.array(products_kpi.drop(['post_title', 'id', 'current_price'], axis=1))
+        X = np.array(products_kpi.drop(['post_title', 'id', 'current_price', 'stock_quantity'], axis=1))
         
         kmeans = KMeans(n_clusters=3, random_state=0).fit(X)
 
@@ -159,13 +159,19 @@ class ProductService(object):
         products_kpi = products_kpi.sort_values(by='rating', ascending=False)
 
         valor_investido = []
+        visitas_estimadas = []
+        fat_estimado = []
 
 
         for index, row in products_kpi.iterrows():
             
             taxa_convercao = self.get_taxa_convercao(row['id'])
-            visitas_ideais = row['stock_quantity'] / taxa_convercao 
-            valor_produto = visitas_ideais * 3
+
+            if(taxa_convercao == 0):
+                taxa_convercao = 1
+
+            visitas_ideais = row['stock_quantity'] / taxa_convercao
+            valor_produto = round(visitas_ideais * self.cmc, 2)
 
             if(valor_produto <= valorCampanha):
                 valorCampanha = valorCampanha - valor_produto
@@ -175,10 +181,18 @@ class ProductService(object):
             else: 
                 valor_produto = 0
 
+            nu_visitas_estimada = round(valor_produto * self.cmc, 0)
+            valor_faturumento_estimado = round(nu_visitas_estimada * taxa_convercao * float(row['current_price']), 2)
+
+            visitas_estimadas.append(nu_visitas_estimada)
+            fat_estimado.append(valor_faturumento_estimado)
             valor_investido.append(valor_produto)
 
         products_kpi['valor_investido'] = valor_investido
+        products_kpi['visitas_estimadas'] = visitas_estimadas
+        products_kpi['fat_estimado'] = fat_estimado
 
+        products_kpi = products_kpi[products_kpi.valor_investido > 0]
         return products_kpi.to_dict('records')
 
     def get_rating(self, min, max, rating):

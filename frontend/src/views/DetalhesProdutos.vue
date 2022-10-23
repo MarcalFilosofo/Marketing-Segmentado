@@ -1,29 +1,19 @@
 <template>
   <div class="card">
     <div class="card-header pb-0">
-      <h6>Análise de produtos</h6>
+      <h6>Detalhes dos produtos</h6>
     </div>
     <div class="card-body px-0 pt-0 pb-2">
-      <div class="card-title px-1">
-        <label for="">Digite quanto você deseja investir na campanha</label>
-        <div class="input-group col-12 col-md-6">
-          <input type="number" min="0" class="form-control" id="valor_campanha" placeholder="Valor em Reais" v-model="valorCampanha">
-          <div class="input-group-prepend">
-            <div class="input-group-text bg-primary" v-on:click="this.getProducts()">Calcular campanha</div>
-          </div>
-        </div>
-      </div>
+      
       <div class="table-responsive p-0">
         <table class="table align-items-center mb-0">
           <thead>
             <tr>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Produto</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Valor para investir</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estoque</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Visitas estimadas</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Faturamento estimado</th>
-              <!-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Preço atual</th> -->
-              <!-- <th
+              <!-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Visitas estimadas</th> -->
+              <!-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Faturamento estimado</th> -->
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Preço atual</th>
+              <th
                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
               >Número de pedidos</th>
               <th
@@ -31,11 +21,14 @@
               >Taxa de recompra</th>
               <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >NPS</th> -->
+              >NPS</th>
+              <th
+                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+              >Situção do estoque</th>
               <!-- <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >Classificação inteligente</th>
-              <th
+              >Classificação inteligente</th> -->
+              <!-- <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
               >Rating</th> -->
             </tr>
@@ -52,30 +45,21 @@
                 </div>
               </td>
               <td>
-                <p class="text-xs font-weight-bold mb-0">R$ {{ p.valor_investido }}</p>
-              </td>
-              <!-- <td>
                 <p class="text-xs font-weight-bold mb-0">{{ p.current_price }}</p>
-              </td> -->
-              <!-- <td>
+              </td>
+              <td>
                 <p class="text-xs font-weight-bold mb-0">{{ p.qt_orders }}</p>
-              </td> -->
-              <!-- <td>
+              </td>
+              <td>
                 <p class="text-xs font-weight-bold mb-0">{{ p.repurchase }}%</p>
-              </td> -->
-              <!-- <td class="align-middle text-center text-sm">
+              </td>
+              <td class="align-middle text-center text-sm">
                 <span class="badge badge-sm " :class="p.nps >= 4 ? 'bg-gradient-success' : 'bg-gradient-danger' ">{{ p.nps }}</span>
-              </td> -->
+              </td>
               <td class="align-middle text-center">
                 <span class="text-xs font-weight-bold badge badge-sm" :class="p.stock_status == 1 ? 'bg-gradient-success' : 'bg-gradient-danger' ">
                   {{ p.stock_status == 1 ? 'Disponível' : 'Indisponível' }} <small>({{ p.stock_quantity }})</small>
                 </span>
-              </td>
-              <td>
-                <p class="text-xs font-weight-bold mb-0">{{ p.visitas_estimadas }}</p>
-              </td>
-              <td>
-                <p class="text-xs font-weight-bold mb-0">R$ {{ p.fat_estimado }}</p>
               </td>
               <!-- <td class="align-middle text-center">
                 <span class="text-secondary text-xs font-weight-bold">{{ p.K_classes }}</span>
@@ -98,7 +82,7 @@ export default {
   data() {
     return {
       products: [],
-      valorCampanha: 0
+      valorCampanha: 999999999999999999
     }
   },
 

@@ -270,7 +270,7 @@ class OrderService(object):
 
     # TODO: pegar a taxa de desconto
     def get_taxa_desconto(self):
-        return 0.11
+        return 0.5
 
     def get_clv(self):
         ano_atual = datetime.today().strftime('%Y')

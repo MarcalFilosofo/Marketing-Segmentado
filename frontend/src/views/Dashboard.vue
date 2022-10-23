@@ -4,24 +4,30 @@
       <div class="col-lg-12">
         <div class="row">
           <div class="col-lg-3 col-md-6 col-12">
-            <card
-              :title="stats.ltv.title"
-              :value="stats.ltv.value"
-              :percentage="stats.ltv.percentage"
-              :iconClass="stats.ltv.iconClass"
-              :iconBackground="stats.ltv.iconBackground"
-              :detail="stats.ltv.detail"
-              directionReverse
-            ></card>
+            
+              <card
+                :title="stats.ltv.title"
+                :value="stats.ltv.value"
+                :percentage="stats.ltv.percentage"
+                :iconClass="stats.ltv.iconClass"
+                :iconBackground="stats.ltv.iconBackground"
+                :detail="stats.ltv.detail"
+                directionReverse
+                data-container="body" 
+                data-toggle="popover" 
+                data-placement="bottom" 
+                data-content="TEsTE."
+              ></card>
+
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <card
-              :title="stats.cac.title"
-              :value="stats.cac.value"
-              :percentage="stats.cac.percentage"
-              :iconClass="stats.cac.iconClass"
-              :iconBackground="stats.cac.iconBackground"
-              :detail="stats.cac.detail"
+              :title="stats.churn.title"
+              :value="stats.churn.value"
+              :percentage="stats.churn.percentage"
+              :iconClass="stats.churn.iconClass"
+              :iconBackground="stats.churn.iconBackground"
+              :detail="stats.churn.detail"
               directionReverse
             ></card>
           </div>
@@ -173,8 +179,8 @@ export default {
         let kpis_json = await kpis_request.json()
 
         this.stats.ltv.value = `R$ ${kpis_json.ltv}`
-        this.stats.cac.value = `R$ ${kpis_json.cac}`
-        this.stats.nps.value = `${kpis_json.nps}`
+        this.stats.churn.value = `${kpis_json.churn}`
+        this.stats.nps.value = `${kpis_json.nps}/5`
         this.stats.mau.value = `${kpis_json.mau}`
         console.log(kpis_json)
       } catch (error) {
@@ -191,15 +197,15 @@ export default {
           value: "R$ 0.0",
           percentage: "",
           iconClass: "ni ni-money-coins",
-          detail: "Lifetime value",
+          detail: "Quanto vale o seu cliente",
           iconBackground: "bg-gradient-primary",
         },
-        cac: {
-          title: "CAC",
-          value: "R$ 0.0",
+        churn: {
+          title: "CHURN",
+          value: "0",
           percentage: "",
           iconClass: "ni ni-single-02",
-          detail: "Custo de aquisição de cliente",
+          detail: "Perda de clientes",
           iconBackground: "bg-gradient-primary",
         },
         mau: {
@@ -215,7 +221,7 @@ export default {
           value: "0",
           percentage: "",
           iconClass: "ni ni-satisfied",
-          detail: "Net Promoter Score",
+          detail: "Satisfação do cliente",
           iconBackground: "bg-gradient-primary",
         },
       },
