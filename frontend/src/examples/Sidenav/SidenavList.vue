@@ -19,7 +19,18 @@
         <sidenav-item
           url="/analise"
           :class="getRoute() === 'analise' ? 'active' : ''"
-          navText="Análise de campanha"
+          navText="Simulador de campanha"
+        >
+          <template v-slot:icon>
+            <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+          </template>
+        </sidenav-item>
+      </li>
+      <li class="nav-item">
+        <sidenav-item
+          url="/estoque-abc"
+          :class="getRoute() === 'estoque-abc' ? 'active' : ''"
+          navText="Curva ABC de estoque"
         >
           <template v-slot:icon>
             <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>

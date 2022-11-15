@@ -17,6 +17,61 @@ class ProductService(object):
         taxa_convercao = 0.1
         return taxa_convercao
 
+    def get_estoque_abc(self):
+        self.conn.execute("""
+            SELECT 
+                COUNT(*) qt, 
+                COUNT(*) / (SELECT COUNT(*) FROM wp_wc_order_product_lookup) * 100 as percentil, 
+                wp_posts.post_title 
+            FROM `wp_wc_order_product_lookup`
+            INNER JOIN wp_posts ON wp_wc_order_product_lookup.product_id = wp_posts.ID
+            GROUP BY wp_posts.ID  
+            ORDER BY qt DESC;
+        """)
+
+        produtos_acumulados_tmp = self.conn.fetchall()
+
+        produtos_acumulados = []
+        percentual_tmp = 0
+        total_a = 0
+        total_b = 0
+        total_c = 0
+        total_prod_a = 0
+        total_prod_b = 0
+        total_prod_c = 0
+        
+        for p in produtos_acumulados_tmp:
+            percentual_tmp += p['percentil']
+            p['acumulado'] = percentual_tmp
+
+            if(percentual_tmp <= 80):
+                total_prod_a += 1
+                total_a += float(p['qt'])
+                classe = "A"
+            elif(percentual_tmp > 80 and percentual_tmp <= 95):
+                total_prod_b += 1
+                total_b += float(p['qt'])
+                classe = "B"
+            else:
+                total_prod_c += 1
+                total_c += float(p['qt'])
+                classe = "C"
+
+            p['classe'] = classe
+            produtos_acumulados.append(p)
+
+        produtos_acumulados= dict({
+            "total_a": total_a,
+            "total_b": total_b,
+            "total_c": total_c,
+            "total_prod_a": total_prod_a,
+            "total_prod_b": total_prod_b,
+            "total_prod_c": total_prod_c,
+            "produtos": produtos_acumulados
+        })
+     
+        return produtos_acumulados
+
     def get_qt_orders(self, product_id):
         self.conn.execute("""
             SELECT COUNT(*) qt FROM `wp_wc_order_product_lookup`

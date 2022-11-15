@@ -46,6 +46,9 @@ def get_report():
 
     return report
 
+@app.route('/estoque-abc', methods=['GET'])
+def return_abc():
+    return productService.get_estoque_abc()
 
 @app.route('/historico_ticket_medio', methods=["GET"])
 def return_historico_ticket_medio():

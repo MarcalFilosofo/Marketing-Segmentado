@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
+import EstoqueABC from "../views/EstoqueABC.vue";
 import Analise from "../views/Analise.vue";
 import Explicacao from "../views/Explicacao.vue";
 import DetalhesProdutos from "../views/DetalhesProdutos.vue";
@@ -21,6 +22,11 @@ const routes = [
     path: "/dashboard-default",
     name: "Dashboard",
     component: Dashboard,
+  },
+  {
+    path: "/estoque-abc",
+    name: "EstoqueABC",
+    component: EstoqueABC,
   },
   {
     path: "/tables",
