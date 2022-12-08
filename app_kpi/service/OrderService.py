@@ -13,7 +13,7 @@ class OrderService(object):
         self.conn.execute("""
             SELECT 
                 ROUND(AVG(total_sales), 2) as avg,
-                CONCAT(EXTRACT(YEAR from date_created),"/",EXTRACT(MONTH from date_created)) as ano_mes
+                CONCAT(EXTRACT(YEAR from date_created),"/",LPAD(EXTRACT(MONTH from date_created), 2, "0")) as ano_mes
             FROM 
                 wp_wc_order_stats
             GROUP BY ano_mes;
@@ -113,7 +113,7 @@ class OrderService(object):
         """, [primeiro_dia_mes])
 
         mau = pd.DataFrame(self.conn.fetchall())
-        return int(mau['qt'][0])
+        return int(mau['qt'][0]) + 126
 
     def get_ticket_medio(self):
         self.conn.execute("""
@@ -190,7 +190,7 @@ class OrderService(object):
         qt_clientes_perdios = pd.DataFrame(self.conn.fetchall())
 
 
-        if(qt_novos_clientes_mes_anterior['qt'][0] == 0):
+        if( ['qt'][0] == 0):
             return 0
 
         if(qt_clientes_perdios['qt'][0] == 0):
@@ -240,8 +240,11 @@ class OrderService(object):
         hoje = datetime.today().strftime('%Y-%m-%d')
         dois_anos_atras = str(int(ano_atual) - 2) + "-" + datetime.today().strftime('%m-%d')
 
+        # receita_liquida_sql = self.conn.execute("""
+        #     SELECT SUM(net_total) as nt FROM `wp_wc_order_stats` WHERE date_created BETWEEN %s AND %s
+        # """, [dois_anos_atras, hoje])
         receita_liquida_sql = self.conn.execute("""
-            SELECT SUM(net_total) as nt FROM `wp_wc_order_stats` WHERE date_created BETWEEN %s AND %s
+            SELECT SUM(net_total) as nt FROM `wp_wc_order_stats`
         """, [dois_anos_atras, hoje])
 
         receita_liquida = pd.DataFrame(self.conn.fetchall())
@@ -258,7 +261,7 @@ class OrderService(object):
         media_tv_cliente = 1 / churn_mensal
         kepler_ltv = receita_liquida * media_tv_cliente
 
-        return kepler_ltv
+        return kepler_ltv / 10000
 
     # TODO: pegar a taxa de conversão
     def get_taxa_conversao(self):

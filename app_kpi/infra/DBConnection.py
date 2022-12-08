@@ -12,7 +12,7 @@ class DBConnection:
                 password='app_kpi',
                 host='127.0.0.1',
                 port=int(3306),
-                database='wordpress'
+                database='woocommerce'
 
                 # HOST_CONNECT=""
                 # DATABASE_PORT=3306

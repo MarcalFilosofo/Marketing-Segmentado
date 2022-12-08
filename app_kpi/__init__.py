@@ -37,7 +37,7 @@ def get_report():
         'mrr': orderService.get_mrr(),
         'mau': orderService.get_mau(),
         'churn_liquido': orderService.get_churn_liquido(),
-        'churn': orderService.get_churn_mensal(),
+        'churn': orderService.get_churn_mensal() + 6.5,
         "receita_liquida": orderService.get_receita_liquida(),
         "ltv": f"{orderService.get_ltv():_.2f}".replace('.', ',').replace('_', '.'),
         "nps": orderService.get_nps(),

@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
+from math import sqrt
 
 from infra.DBConnection import DBConnection
 
@@ -11,10 +12,10 @@ from infra.DBConnection import DBConnection
 class ProductService(object):
     def __init__(self):
         self.conn = DBConnection.getConnection()
-        self.cmc = 3
+        self.cmc = 90
         
     def get_taxa_convercao(self, product_id):
-        taxa_convercao = 0.1
+        taxa_convercao = 0.003
         return taxa_convercao
 
     def get_estoque_abc(self):
@@ -189,7 +190,6 @@ class ProductService(object):
 
         for sd in scaled_data:
             ratings.append(np.mean(sd))
-       
 
         min = float(np.min(ratings))
         max = float(np.max(ratings))
@@ -202,8 +202,10 @@ class ProductService(object):
         )
 
         X = np.array(products_kpi.drop(['post_title', 'id', 'current_price', 'stock_quantity'], axis=1))
-        
-        kmeans = KMeans(n_clusters=3, random_state=0).fit(X)
+        sum_of_squares = self.calculate_wcss(pd.DataFrame(X))
+        n = self.optimal_number_of_clusters(sum_of_squares)
+
+        kmeans = KMeans(n_clusters=n, random_state=0).fit(X)
 
         classes = list(map(self.padronizar_classe, kmeans.labels_))
         products_kpi['K_classes'] = classes
@@ -217,7 +219,6 @@ class ProductService(object):
         visitas_estimadas = []
         fat_estimado = []
 
-
         for index, row in products_kpi.iterrows():
             
             taxa_convercao = self.get_taxa_convercao(row['id'])
@@ -225,23 +226,35 @@ class ProductService(object):
             if(taxa_convercao == 0):
                 taxa_convercao = 1
 
-            visitas_ideais = row['stock_quantity'] / taxa_convercao
-            valor_produto = round(visitas_ideais * self.cmc, 2)
+            if(row['stock_quantity'] > 5):
+                visitas_ideais = (int(row['stock_quantity']) - 5) / taxa_convercao
+            else:
+                visitas_ideais = (int(row['stock_quantity'])) / taxa_convercao
+
+            valor_produto = round(visitas_ideais / 1000 * self.cmc, 2)
 
             if(valor_produto <= valorCampanha):
                 valorCampanha = valorCampanha - valor_produto
             elif(valorCampanha > 0 and valor_produto > valorCampanha):
                 valor_produto = valorCampanha
                 valorCampanha = 0
-            else: 
+            else:
                 valor_produto = 0
 
             nu_visitas_estimada = round(valor_produto * self.cmc, 0)
-            valor_faturumento_estimado = round(nu_visitas_estimada * taxa_convercao * float(row['current_price']), 2)
+
+            vendas_extimadas = int(nu_visitas_estimada * taxa_convercao)
+
+            if(vendas_extimadas > row['stock_quantity']):
+                valor_faturumento_estimado = float(row['current_price']) * (row['stock_quantity'] - 5) / 3
+            else:
+                valor_faturumento_estimado = float(row['current_price']) * vendas_extimadas / 3
 
             visitas_estimadas.append(nu_visitas_estimada)
-            fat_estimado.append(valor_faturumento_estimado)
-            valor_investido.append(valor_produto)
+            #fat_estimado.append(valor_faturumento_estimado)
+            fat_estimado.append(f"{valor_faturumento_estimado:_.2f}".replace('.', ',').replace('_', '.'))
+
+            valor_investido.append(round(valor_produto, 2))
 
         products_kpi['valor_investido'] = valor_investido
         products_kpi['visitas_estimadas'] = visitas_estimadas
@@ -269,12 +282,39 @@ class ProductService(object):
         return round(new_rating, 2)
 
 
+    def calculate_wcss(self, data):
+        wcss = []
+        for n in range(2, 21):
+            kmeans = KMeans(n_clusters=n)
+            kmeans.fit(X=data)
+            wcss.append(kmeans.inertia_)
+
+        return wcss
+
+    def optimal_number_of_clusters(self, wcss):
+        x1, y1 = 2, wcss[0]
+        x2, y2 = 20, wcss[len(wcss)-1]
+
+        distances = []
+        for i in range(len(wcss)):
+            x0 = i+2
+            y0 = wcss[i]
+            numerator = abs((y2-y1)*x0 - (x2-x1)*y0 + x2*y1 - y2*x1)
+            denominator = sqrt((y2 - y1)**2 + (x2 - x1)**2)
+            distances.append(numerator/denominator)
+        
+        return distances.index(max(distances)) + 2
+
+
     def padronizar_classe(self, k_class):
         if(k_class == 1):
-            return "C"
+            return "D"
         
         if(k_class == 0):
             return "B"
 
         if(k_class == 2):
+            return "C"
+
+        if(k_class == 4):
             return "A"
